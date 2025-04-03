@@ -3,8 +3,8 @@
  * @param classModel any
  * @param body any
  */
-const sanitizeBody = (classModel: Record<string, unknown>, body: Record<string, unknown>): Record<string, unknown> => {
-  return Object.keys(body).reduce((sanitized: Record<string, unknown>, key: string) => {
+function sanitizeBody(classModel: Record<string, string | number | boolean>, body: Record<string, string | number | boolean>): Record<string, string | number | boolean> {
+  return Object.keys(body).reduce((sanitized: Record<string, string | number | boolean>, key: string) => {
     if (Object.prototype.hasOwnProperty.call(classModel, key)) {
       sanitized[key] = body[key]; // Keep only valid keys
     }

@@ -3,7 +3,12 @@ import app from "./app";
 const PORT = process.env.PORT || 5000;
 
 // To Do: initiate database connection
+import { AppDataSource } from "./db/db.config"
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+AppDataSource.initialize().then(() => {
+  console.log("Connected to database")
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}).catch(error => console.log(error))
+
