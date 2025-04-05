@@ -23,6 +23,14 @@ export class GroceryEntity extends CommonEntity {
   })
   stock: number;
 
+  @Column({
+    type: "enum",
+    default: 1,
+    enum: [0, 1],
+    select: false
+  })
+  status: number;
+
   @OneToMany(() => OrderItemEntity, (orderItem) => orderItem.grocery, {
     cascade: true,
   })
