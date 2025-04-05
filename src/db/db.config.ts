@@ -4,6 +4,8 @@ import { UserEntity } from "../models/user.entity"
 import { GroceryEntity } from "../models/grocery.entity"
 import { OrderEntity } from "../models/order.entity"
 import { OrderItemEntity } from "../models/orderItem.entity"
+import { CartEntity } from "../models/cart.entity"
+import { CartItemEntity } from "../models/cartItem.entity"
 
 export const AppDataSource = new DataSource({
     type: "postgres",
@@ -14,7 +16,7 @@ export const AppDataSource = new DataSource({
     database: "qp_database",
     synchronize: true,
     logging: false,
-    entities: [UserEntity, GroceryEntity, OrderEntity, OrderItemEntity],
+    entities: [UserEntity, GroceryEntity, OrderEntity, OrderItemEntity, CartEntity, CartItemEntity],
     migrations: [],
     subscribers: [],
 })

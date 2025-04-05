@@ -9,6 +9,7 @@ import { createUser, findUserByEmailAndRole } from "../db/repository/auth/auth.d
 import { verifyPassword } from "../utils/bcrypt";
 import { generateToken } from "../utils/jwt";
 import { loginModel, LoginModelType } from "../db/repository/auth/login/login.model";
+import { createUserCart } from "../db/repository/cart/cart.db";
 
 export const registerUser = catchAsyn(
   async (req: Request, res: Response, _next: NextFunction) => {
@@ -18,7 +19,8 @@ export const registerUser = catchAsyn(
       return res.status(400).send({ message: "User already exists" });
     }
     console.log("....", body);
-    await createUser(body, "USER");
+    const user = await createUser(body, "USER");
+    await createUserCart(user);
     return res.status(201).send({ message: "User Created" });
   }
 );

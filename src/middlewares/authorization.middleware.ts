@@ -3,9 +3,14 @@ import { verifyToken } from "../utils/jwt";
 import { catchAsyn } from "../utils/catchAsync";
 import { findUserByEmailAndRoleAndId } from "../db/repository/auth/auth.db";
 import { RegisterModelType } from "../db/repository/auth/register/registor.model";
+import { UserEntity } from "../models/user.entity";
+
+export interface AuthRequest extends Request {
+  user?: UserEntity;
+}
 
 export const userAuthorizationMiddleware = catchAsyn(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: AuthRequest, res: Response, next: NextFunction) => {
     const bearerToken = req.headers?.authorization;
     if (!bearerToken)
       return res.status(401).json({ message: "Token required" });
@@ -19,8 +24,10 @@ export const userAuthorizationMiddleware = catchAsyn(
       verifyTokenData.id,
       "USER"
     );
-    if (user === null)
+    if (user === null) {
       return res.status(403).json({ message: "Access denied" });
+    }
+    req.user = {id: verifyTokenData.id} as UserEntity;
     next();
   }
 );

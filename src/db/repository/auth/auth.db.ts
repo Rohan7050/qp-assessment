@@ -31,7 +31,7 @@ export const findUserByEmailAndRoleAndId = async (
   return null;
 };
 
-export const createUser = async (body: RegisterModelType, role: string): Promise<void> => {
+export const createUser = async (body: RegisterModelType, role: string): Promise<UserEntity> => {
   console.log(body);
   const hashedPassword = await encryptPassword(body.password);
   const user = UserEntity.create({
@@ -40,4 +40,5 @@ export const createUser = async (body: RegisterModelType, role: string): Promise
     password: hashedPassword,
   });
   await user.save();
+  return user;
 };
