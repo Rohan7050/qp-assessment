@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 interface TokenPayload {
+    id: number,
     email: string;
 }
 

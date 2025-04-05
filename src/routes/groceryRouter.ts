@@ -4,16 +4,17 @@ import { GroceryCreateNewDto } from '../db/repository/grocery/groceryCreateNew/g
 import { addNewGroceryItem, getAllGroceryItemList, removeGroceryItem, updateGroceryItem, updateInventoryLevel } from '../controllers/grocery.controller';
 import { GroceryUpdateItemDto } from '../db/repository/grocery/groceryUpdateItem/groceryUpdateItem.dto';
 import { InventoryUpdateDTO } from '../db/repository/grocery/inventoryUpdate/inventoryUpdate.dto';
+import { adminAuthorizationMiddleware } from '../middlewares/authorization.middleware';
 const groceryRouter = express.Router();
 
-groceryRouter.post('/admin/grocery', validationMiddleware(GroceryCreateNewDto), addNewGroceryItem);
+groceryRouter.post('/admin/grocery', adminAuthorizationMiddleware, validationMiddleware(GroceryCreateNewDto), addNewGroceryItem);
 
-groceryRouter.get('/admin/grocery', getAllGroceryItemList);
+groceryRouter.get('/admin/grocery', adminAuthorizationMiddleware, getAllGroceryItemList);
 
-groceryRouter.delete('/admin/grocery/:id', removeGroceryItem);
+groceryRouter.delete('/admin/grocery/:id', adminAuthorizationMiddleware, removeGroceryItem);
 
-groceryRouter.put('/admin/grocery/:id', validationMiddleware(GroceryUpdateItemDto), updateGroceryItem);
+groceryRouter.put('/admin/grocery/:id', adminAuthorizationMiddleware, validationMiddleware(GroceryUpdateItemDto), updateGroceryItem);
 
-groceryRouter.put("/admin/grocery/:id/stock", validationMiddleware(InventoryUpdateDTO), updateInventoryLevel);
+groceryRouter.put("/admin/grocery/:id/stock", adminAuthorizationMiddleware, validationMiddleware(InventoryUpdateDTO), updateInventoryLevel);
 
 export default groceryRouter;

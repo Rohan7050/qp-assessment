@@ -17,6 +17,20 @@ export const findUserByEmailAndRole = async (
   return null;
 };
 
+export const findUserByEmailAndRoleAndId = async (
+  email: string,
+  id: number,
+  role: string
+): Promise<RegisterModelType | null> => {
+  const user: RegisterModelType | null = await userRepository.findOneBy({
+    id,
+    email,
+    role
+  });
+  if (user) return user;
+  return null;
+};
+
 export const createUser = async (body: RegisterModelType, role: string): Promise<void> => {
   console.log(body);
   const hashedPassword = await encryptPassword(body.password);
