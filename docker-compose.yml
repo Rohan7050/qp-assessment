@@ -1,0 +1,39 @@
+services:
+  backend:
+    build: .
+    container_name: qp_backend
+    ports:
+      - "3000:3000"
+      # hostPort:containerPort
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=qp_database
+      - PORT=3000
+      - JWT_SECRET=hduiahdiuahdyuvfcanexcoiajduiawgduyvawbu
+    depends_on:
+      - postgres
+    # volumes:
+    #   - .:/app
+    #   - /app/node_modules
+    command: npm run start
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:15
+    container_name: postgres_db
+    ports:
+      - "4200:5432"
+      # hostPort:containerPort
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: qp_database
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  pgdata:
