@@ -18,7 +18,6 @@ export const registerUser = catchAsyn(
     if (existingUser) {
       return res.status(400).send({ message: "User already exists" });
     }
-    console.log("....", body);
     const user = await createUser(body, "USER");
     await createUserCart(user);
     return res.status(201).send({ message: "User Created" });
@@ -32,7 +31,6 @@ export const registerAdmin = catchAsyn(
     if (existingUser) {
       return res.status(400).send({ message: "admin with this email already exists" });
     }
-    console.log("....", body);
     await createUser(body, "ADMIN");
     return res.status(201).send({ message: "admin Created" });
   }

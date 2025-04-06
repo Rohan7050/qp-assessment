@@ -1,7 +1,7 @@
 import express from 'express';
 import validationMiddleware from '../middlewares/validation.middleware';
 import { userAuthorizationMiddleware } from '../middlewares/authorization.middleware';
-import { addItemUserCart, clearUserCart, deleteItemFromUserCart, getAllGroceryItemList, getUserCart, updateUserCartItem } from '../controllers/user.controller';
+import { addItemUserCart, clearUserCart, deleteItemFromUserCart, getAllGroceryItemList, getUserCart, getUserOrderList, placeOrder, updateUserCartItem } from '../controllers/user.controller';
 import { AddItemInCartDto } from '../db/repository/cart/addItemInCart/addItemInCart.dto';
 import { UpdateItemFromCartDto } from '../db/repository/cart/updateItemFromCart/updateItemFromCart.dto';
 const userRouter = express.Router();
@@ -24,5 +24,9 @@ userRouter.delete('/cart', userAuthorizationMiddleware, clearUserCart);
 userRouter.patch('/cart', userAuthorizationMiddleware, validationMiddleware(UpdateItemFromCartDto), updateUserCartItem);
 
 // Checkout / create order
+userRouter.post('/order', userAuthorizationMiddleware, placeOrder);
+
+// get all order
+userRouter.get('/order', userAuthorizationMiddleware, getUserOrderList);
 
 export default userRouter;
