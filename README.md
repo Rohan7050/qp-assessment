@@ -65,3 +65,15 @@ docker compose up
 
 Environment Setup
 The backend service runs on: http://localhost:3000
+
+---
+## 🧪 API Testing with Postman
+
+### You can use our pre-configured Postman collection to test the API endpoints.
+[Link Text](./postman/qp-assessment.postman_collection.json)
+
+### 🛠 How to Use
+1. Open Postman.
+2. Click Import → Upload the JSON file or paste the link above.
+3. Use the pre-written requests to test the API.
+
