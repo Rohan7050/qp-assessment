@@ -70,7 +70,7 @@ The backend service runs on: http://localhost:3000
 ## 🧪 API Testing with Postman
 
 ### You can use our pre-configured Postman collection to test the API endpoints.
-[Link Text](./postman/qp-assessment.postman_collection.json)
+[Link Text](https://github.com/Rohan7050/qp-assessment/blob/DEV_Rohan/postman/qp_assesment.postman_collection.json)
 
 ### 🛠 How to Use
 1. Open Postman.
