@@ -3,7 +3,7 @@ import { CartEntity } from "./cart.entity";
 import { GroceryEntity } from "./grocery.entity";
 import { CommonEntity } from "./common.entity";
 
-@Entity()
+@Entity("cart_item")
 export class CartItemEntity extends CommonEntity {
   @ManyToOne(() => CartEntity, (cart) => cart.items)
   cart: CartEntity;
