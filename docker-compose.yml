@@ -15,10 +15,11 @@ services:
       - JWT_SECRET=hduiahdiuahdyuvfcanexcoiajduiawgduyvawbu
     depends_on:
       - postgres
-    volumes:
-      - .:/app
-      - /app/node_modules
+    # volumes:
+    #   - .:/app
+    #   - /app/node_modules
     command: npm run start
+    restart: unless-stopped
 
   postgres:
     image: postgres:15
@@ -32,6 +33,7 @@ services:
       POSTGRES_DB: qp_database
     volumes:
       - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
 
 volumes:
   pgdata:
