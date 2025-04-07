@@ -23,6 +23,12 @@ import {
   inventoryUpdateModel,
   InventoryUpdateModelType,
 } from "../db/repository/grocery/inventoryUpdate/inventoryUpdate.model";
+import {
+  CreateSuccessResponse,
+  SuccessMsgResponse,
+  SuccessResponse,
+} from "../core/successResponse";
+import { BadRequestResponse, NotFoundResponse } from "../core/failureResponse";
 
 // to do: add new grocery item
 export const addNewGroceryItem = catchAsyn(
@@ -32,7 +38,7 @@ export const addNewGroceryItem = catchAsyn(
       req.body
     ) as GroceryCreateNewModelType;
     const newItem = await createNewGroceryItem(body);
-    return res.status(201).send({ message: "new Item Created", data: newItem });
+    return new CreateSuccessResponse("new Item Created", newItem).send(res);
   }
 );
 
@@ -40,7 +46,7 @@ export const addNewGroceryItem = catchAsyn(
 export const getAllGroceryItemList = catchAsyn(
   async (req: Request, res: Response, _next: NextFunction) => {
     const allItems: GroceryItemModelType[] = await getAllGroceryItems();
-    return res.status(201).send({ message: "success", data: allItems });
+    return new SuccessResponse("success", allItems).send(res);
   }
 );
 
@@ -50,8 +56,8 @@ export const removeGroceryItem = catchAsyn(
     const { id } = req.params;
     const removeItem = await deleteGroceryItem(parseInt(id));
     if (!removeItem)
-      return res.status(400).send({ message: "item does not exists" });
-    return res.status(201).send({ message: "success" });
+      return new NotFoundResponse("item does not exists").send(res);
+    return new SuccessMsgResponse("success").send(res);
   }
 );
 
@@ -63,9 +69,9 @@ export const updateGroceryItem = catchAsyn(
     ) as GroceryUpdateItemModelType;
     const { id } = req.params;
     const item: GroceryEntity | null = await getGroceryItemById(parseInt(id));
-    if (!item) return res.status(404).send({ message: "item does not exists" });
+    if (!item) return new NotFoundResponse("item does not exists").send(res);
     const updateItem = await updateGroceryItemByEntity(body, item!);
-    return res.status(200).send({ message: "updated", data: updateItem });
+    return new SuccessResponse("updated", updateItem).send(res);
   }
 );
 
@@ -77,11 +83,17 @@ export const updateInventoryLevel = catchAsyn(
     ) as InventoryUpdateModelType;
     const { id } = req.params;
     const item: GroceryEntity | null = await getGroceryItemById(parseInt(id));
-    if (!item) return res.status(404).send({ message: "item does not exists" });
-    if(body.operation === "subtract" && item.stock - body.quantity < 0) {
-      return res.status(400).send({ message: "subtract quantity is more than available quantity" });
+    if (!item) return new NotFoundResponse("item does not exists").send(res);
+    if (body.operation === "subtract" && item.stock - body.quantity < 0) {
+      return new BadRequestResponse(
+        "ubtract quantity is more than available quantity"
+      ).send(res);
     }
-    const updateItem = await itemInventoryUpdate(body.operation, body.quantity, item!);
-    return res.status(200).send({ message: "updated", data: updateItem });
+    const updateItem = await itemInventoryUpdate(
+      body.operation,
+      body.quantity,
+      item!
+    );
+    return new SuccessResponse("updated", updateItem).send(res);
   }
 );
