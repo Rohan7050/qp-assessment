@@ -86,7 +86,7 @@ export const updateInventoryLevel = catchAsyn(
     if (!item) return new NotFoundResponse("item does not exists").send(res);
     if (body.operation === "subtract" && item.stock - body.quantity < 0) {
       return new BadRequestResponse(
-        "ubtract quantity is more than available quantity"
+        "subtract quantity is more than available quantity"
       ).send(res);
     }
     const updateItem = await itemInventoryUpdate(

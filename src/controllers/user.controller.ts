@@ -28,12 +28,14 @@ import {
 } from "../db/repository/cart/updateItemFromCart/updateItemFromCart.model";
 import { PlaceOrderModelType } from "../db/repository/cart/placeOrder/placeOrder.model";
 import { OrderEntity } from "../models/order.entity";
+import { SuccessMsgResponse, SuccessResponse } from "../core/successResponse";
+import { BadRequestResponse, NotFoundResponse } from "../core/failureResponse";
 
 // get list of grocery
 export const getAllGroceryItemList = catchAsyn(
   async (req: Request, res: Response, _next: NextFunction) => {
     const allItems: GroceryItemModelType[] = await getAllGroceryItems();
-    return res.status(201).send({ message: "success", data: allItems });
+    return new SuccessResponse("success", allItems).send(res);
   }
 );
 
@@ -42,7 +44,7 @@ export const getUserCart = catchAsyn(
   async (req: AuthRequest, res: Response, _next: NextFunction) => {
     const userId = req.user!.id;
     const userCart: CartEntity | null = await getUserCartById(userId);
-    return res.status(200).send({ message: "success", data: userCart });
+    return new SuccessResponse("success", userCart).send(res);
   }
 );
 
@@ -59,17 +61,17 @@ export const addItemUserCart = catchAsyn(
     )) as CartEntity;
     const isGroceryItemExists = await getGroceryItemById(body.groceryId);
     if (!isGroceryItemExists)
-      return res.status(404).send({ message: "item does not exists" });
+      return new NotFoundResponse("item does not exists").send(res);
     if (isGroceryItemExists.stock <= 0)
-      return res.status(404).send({ message: "item is out of stock" });
+      return new BadRequestResponse("item is out of stock").send(res);
     const isItemInCart = await checkItemInUserCart(
       userCart,
       isGroceryItemExists
     );
     if (isItemInCart)
-      return res.status(400).send({ message: "item already in cart" });
+      return new BadRequestResponse("item already in cart").send(res);
     await addItemInUserCart(userCart, isGroceryItemExists);
-    return res.status(200).send({ message: "item added in cart" });
+    return new SuccessMsgResponse("item added in cart").send(res);
   }
 );
 
@@ -79,16 +81,16 @@ export const deleteItemFromUserCart = catchAsyn(
     const user = req.user;
     const groceryId = req.params.id;
     if (isNaN(parseInt(groceryId)))
-      return res.status(400).send({ message: "invalid id" });
+      return new BadRequestResponse("invalid id").send(res);
     const userCart: CartEntity = (await getUserCartById(
       user!.id
     )) as CartEntity;
     const isGroceryItemExists = await getGroceryItemById(parseInt(groceryId));
     if (!isGroceryItemExists)
-      return res.status(404).send({ message: "item does not exists" });
+      return new NotFoundResponse("item does not exists").send(res);
     const removed = await removeItemFromUserCart(userCart, isGroceryItemExists);
-    if (!removed) return res.status(400).send({ message: "item not in cart" });
-    return res.status(200).send({ message: "item remove from cart" });
+    if (!removed) return new BadRequestResponse("item not in cart").send(res);
+    return new SuccessMsgResponse("item remove from cart").send(res);
   }
 );
 
@@ -97,7 +99,7 @@ export const clearUserCart = catchAsyn(
   async (req: AuthRequest, res: Response, _next: NextFunction) => {
     const user = req.user;
     await emptyUserCart(user!.id);
-    return res.status(200).send({ message: "clear user cart" });
+    return new SuccessMsgResponse("clear user cart").send(res);
   }
 );
 
@@ -114,21 +116,17 @@ export const updateUserCartItem = catchAsyn(
     )) as CartEntity;
     const isGroceryItemExists = await getGroceryItemById(body.groceryId);
     if (!isGroceryItemExists)
-      return res.status(404).send({ message: "item does not exists" });
+      return new NotFoundResponse("item does not exists").send(res);
     if (isGroceryItemExists.stock < body.quantity)
-      return res
-        .status(404)
-        .send({
-          message:
-            "item is out of stock, remaining items: " +
-            isGroceryItemExists.stock,
-        });
+      return new NotFoundResponse(
+        "item is out of stock, remaining items: " + isGroceryItemExists.stock
+      ).send(res);
     const isItemInCart = await checkItemInUserCart(
       userCart,
       isGroceryItemExists
     );
     if (!isItemInCart)
-      return res.status(400).send({ message: "item is not in cart" });
+      return new BadRequestResponse("item is not in cart").send(res);
     if (body.quantity === 0) {
       await removeItemFromUserCart(userCart, isGroceryItemExists);
     } else {
@@ -139,7 +137,7 @@ export const updateUserCartItem = catchAsyn(
       );
     }
     const cart: CartEntity | null = await getUserCartById(user!.id);
-    return res.status(200).send({ message: "update cart item", data: cart });
+    return new SuccessResponse("update cart item", cart).send(res);
   }
 );
 
@@ -151,9 +149,9 @@ export const placeOrder = catchAsyn(
       user!.id
     )) as PlaceOrderModelType;
     if (!order || order.error) {
-      return res.status(400).json({ message: order.message, data: order.data });
+      return new BadRequestResponse(order.message).send(res);
     }
-    return res.status(200).send({ message: order.message, data: order.data });
+    return new SuccessResponse(order.message, order.data).send(res);
   }
 );
 
@@ -161,9 +159,9 @@ export const placeOrder = catchAsyn(
 export const getUserOrderList = catchAsyn(
   async (req: AuthRequest, res: Response, _next: NextFunction) => {
     const user = req.user;
-    const order: OrderEntity[] = await getUserOrder(
+    const order: OrderEntity[] = (await getUserOrder(
       user!.id
-    ) as OrderEntity[];
-    return res.status(200).send({ message: "success", data: order });
+    )) as OrderEntity[];
+    return new SuccessResponse("success", order).send(res);
   }
 );
