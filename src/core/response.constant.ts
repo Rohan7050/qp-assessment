@@ -8,3 +8,10 @@ export enum ResponseStatus {
   METHOD_NOT_FOUND = 405,
   INTERNAL_ERROR = 500,
 }
+
+export type PaginationResType = {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+};

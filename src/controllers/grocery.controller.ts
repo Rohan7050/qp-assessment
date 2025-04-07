@@ -26,6 +26,7 @@ import {
 import {
   CreateSuccessResponse,
   SuccessMsgResponse,
+  SuccessPaginatedResponse,
   SuccessResponse,
 } from "../core/successResponse";
 import { BadRequestResponse, NotFoundResponse } from "../core/failureResponse";
@@ -45,8 +46,18 @@ export const addNewGroceryItem = catchAsyn(
 // to do: view all grocery items
 export const getAllGroceryItemList = catchAsyn(
   async (req: Request, res: Response, _next: NextFunction) => {
-    const allItems: GroceryItemModelType[] = await getAllGroceryItems();
-    return new SuccessResponse("success", allItems).send(res);
+    const page: number = parseInt(req.query.page as string) || 1;
+    const limit: number = parseInt(req.query.limit as string) || 10;
+    const skip: number = (page - 1) * limit;
+    const { data, total }: { data: GroceryItemModelType[]; total: number } =
+      await getAllGroceryItems(skip, limit);
+    const pagination = {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
+    return new SuccessPaginatedResponse("success", data, pagination).send(res);
   }
 );
 

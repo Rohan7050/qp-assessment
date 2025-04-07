@@ -1,5 +1,7 @@
 import { ApiResponse } from "./apiResponse";
-import { ResponseStatus } from "./response.constant";
+import { PaginationResType, ResponseStatus } from "./response.constant";
+
+
 
 export class SuccessMsgResponse extends ApiResponse {
   constructor(message: string = "success") {
@@ -9,6 +11,12 @@ export class SuccessMsgResponse extends ApiResponse {
 
 export class SuccessResponse<T> extends ApiResponse {
   constructor(message: string = "success", private data: T) {
+    super(ResponseStatus.SUCCESS, message);
+  }
+}
+
+export class SuccessPaginatedResponse<T> extends ApiResponse {
+  constructor(message: string = "success", private data: T, private pagination: PaginationResType) {
     super(ResponseStatus.SUCCESS, message);
   }
 }
