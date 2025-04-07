@@ -78,7 +78,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.environment.set(\"USER_TOKEN\", pm.response.json().token)"
+									"pm.environment.set(\"USER_TOKEN\", pm.response.json().data.token)"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -90,7 +90,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"rohan.pagare@gmail.com\",\r\n    \"password\": \"test123\"\r\n}",
+							"raw": "{\r\n    \"email\": \"rohan.pagare@gmail.com\",\r\n    \"password\": \"test123a\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -120,7 +120,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.environment.set(\"ADMIN_TOKEN\", pm.response.json().token)"
+									"pm.environment.set(\"ADMIN_TOKEN\", pm.response.json().data.token)"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -178,7 +178,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"item four\",\r\n    \"price\": 320,\r\n    \"stock\": 20\r\n}",
+							"raw": "{\r\n    \"name\": \"item five\",\r\n    \"price\": 320,\r\n    \"stock\": 100\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -218,7 +218,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/api/user/admin/grocery",
+							"raw": "http://localhost:3000/api/user/admin/grocery?page=3&limit=5",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -229,6 +229,16 @@
 								"user",
 								"admin",
 								"grocery"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "3"
+								},
+								{
+									"key": "limit",
+									"value": "5"
+								}
 							]
 						}
 					},
@@ -259,7 +269,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/user/admin/grocery/2",
+							"raw": "http://localhost:3000/api/user/admin/grocery/4",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -270,7 +280,7 @@
 								"user",
 								"admin",
 								"grocery",
-								"2"
+								"4"
 							]
 						}
 					},
@@ -293,7 +303,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"item nre two new\",\r\n    \"price\": 100.91,\r\n    \"aaa\": \"djoaiwdjo\"\r\n}",
+							"raw": "{\r\n    \"name\": \"updated name\",\r\n    \"price\": 100.91,\r\n    \"aaa\": \"djoaiwdjo\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -301,7 +311,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/user/admin/grocery/5",
+							"raw": "http://localhost:3000/api/user/admin/grocery/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -312,7 +322,7 @@
 								"user",
 								"admin",
 								"grocery",
-								"5"
+								"2"
 							]
 						}
 					},
@@ -382,7 +392,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/api/user/grocery",
+							"raw": "http://localhost:3000/api/user/grocery?limit=5&page=1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -392,6 +402,16 @@
 								"api",
 								"user",
 								"grocery"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "5"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -485,7 +505,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"groceryId\":2,\r\n    \"quantity\": 2\r\n}",
+							"raw": "{\r\n    \"groceryId\":2,\r\n    \"quantity\": 3\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

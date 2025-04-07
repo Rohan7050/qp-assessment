@@ -16,9 +16,18 @@ export const createNewGroceryItem = async (
   return item;
 };
 
-export const getAllGroceryItems = async (): Promise<GroceryItemModelType[]> => {
-  const allItems = await groceryRepository.find({ where: { status: 1 } });
-  return allItems;
+export const getAllGroceryItems = async (
+  skip: number,
+  limit: number
+): Promise<{ data: GroceryItemModelType[]; total: number }> => {
+  const [data, total] = await groceryRepository.findAndCount({
+    where: { status: 1 },
+    skip: skip,
+    take: limit,
+    order: { id: "ASC" },
+  });
+  // const allItems = await groceryRepository.find({ where: { status: 1 } });
+  return { data, total };
 };
 
 export const deleteGroceryItem = async (id: number): Promise<number> => {
@@ -60,7 +69,7 @@ export const itemInventoryUpdate = async (
     case "subtract":
       item.stock -= quantity;
       break;
-    case "set": 
+    case "set":
       item.stock = quantity;
       break;
   }

@@ -6,6 +6,9 @@ This is the backend for a Grocery application built with Node.js, TypeScript, Ex
 [database diagram](https://dbdiagram.io/d/Grocery-Booking-App-67ec17224f7afba184f980d5)
 ---
 
+## API DOCS
+[Api Docs](https://docs.google.com/spreadsheets/d/1ak2OKfkpDi5dSPaG8nSO8vR824Udn8EJTzlniHGmt2M/edit?usp=sharing)  
+
 ## 🚀 Run the App Without Docker
 
 ## 📦 Prerequisites

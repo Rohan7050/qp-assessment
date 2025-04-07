@@ -157,10 +157,18 @@ export const placeOrderFromCart = async (
     await orderItemRepository.save(orderItems);
     await cartItemRepository.remove(cart.items);
     await queryRunner.commitTransaction();
+    const orderData = await orderRepository.findOne({
+      where: { id: userOrder.id },
+      relations: {
+        orderItems: {
+          grocery: true,
+        },
+      },
+    });
     return {
       error: false,
       message: "Order placed successfully",
-      data: order,
+      data: orderData,
     };
   } catch (error: unknown) {
     await queryRunner.rollbackTransaction();
@@ -173,16 +181,18 @@ export const placeOrderFromCart = async (
 
 export const getUserOrder = async (userId: number): Promise<OrderEntity[]> => {
   const order = await orderRepository.find({
-    where: { user: 
-      {
-         id: userId
-      } 
+    where: {
+      user: {
+        id: userId,
+      },
     },
-    relations: 
-    { orderItems :
-      {
-        grocery: true
-      } 
+    order: {
+      created_at: "DESC"
+    },
+    relations: {
+      orderItems: {
+        grocery: true,
+      },
     },
   });
   return order;
