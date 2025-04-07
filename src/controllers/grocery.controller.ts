@@ -31,7 +31,6 @@ import {
 } from "../core/successResponse";
 import { BadRequestResponse, NotFoundResponse } from "../core/failureResponse";
 
-// to do: add new grocery item
 export const addNewGroceryItem = catchAsyn(
   async (req: Request, res: Response, _next: NextFunction) => {
     const body: GroceryCreateNewModelType = sanitizeBody(
@@ -43,7 +42,6 @@ export const addNewGroceryItem = catchAsyn(
   }
 );
 
-// to do: view all grocery items
 export const getAllGroceryItemList = catchAsyn(
   async (req: Request, res: Response, _next: NextFunction) => {
     const page: number = parseInt(req.query.page as string) || 1;
@@ -61,7 +59,6 @@ export const getAllGroceryItemList = catchAsyn(
   }
 );
 
-// to do: remove grocery items
 export const removeGroceryItem = catchAsyn(
   async (req: Request, res: Response, _next: NextFunction) => {
     const { id } = req.params;
