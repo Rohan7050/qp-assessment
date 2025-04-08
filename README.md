@@ -2,6 +2,10 @@
 
 This is the backend for a Grocery application built with Node.js, TypeScript, Express, TypeORM, and PostgreSQL.
 
+## 📝 Description
+This is a grocery store backend built with Node.js, Express, and PostgreSQL, using TypeORM for database interactions. It provides APIs for user authentication, managing grocery items, cart operations, and placing orders.
+✅ Users must authenticate using a Bearer Token (JWT) to access protected routes like cart, order, and grocery management.
+
 ## database diagram:
 [database diagram](https://dbdiagram.io/d/Grocery-Booking-App-67ec17224f7afba184f980d5)
 ---
